@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import bodyParser from "body-parser";
 import UserRouter from "./routes/UserRoutes.js";
 import cors  from "cors";
+
 const app = express();
 const port = 5000;
 
@@ -25,6 +26,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended : true}));
 
 app.use('/api/add',UserRouter);
+// app.use('/api/add/profile',ProfileRouter);
 
 app.use(bodyParser.json());
 

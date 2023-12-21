@@ -6,9 +6,11 @@ import { useDisclosure } from '@mantine/hooks';
 import "./loginform.css";
 import { Link, useNavigate } from 'react-router-dom';
 import Axios from 'axios';
-
+import { UseStore } from '../../store';
+import { toast, ToastContainer } from 'react-toastify';
 function Login() {
     const [visible, { toggle }] = useDisclosure(false);
+    const {setEmail} = UseStore();
     const navigate = useNavigate()
   const form = useForm({
     initialValues: {  email: '', password: '' },
@@ -32,16 +34,33 @@ function Login() {
   });
  async  function handleSubmit(value) {
    console.log(value)
+   const email = value.email
       try {
           const {data} =  await Axios.post('http://localhost:5000/api/add/signin',
               {
                 value
               }
+              
           );
+          console.log(value)
+          toast.success("Login Successfully !",{
+            position: toast.POSITION.BOTTOM_LEFT,
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored"
+          });
+          setEmail({email})
           navigate('/profile')
+          // window.alert("Login successfully")
+          
   }
   catch(err) {
     console.log("error")
+    toast.error("error")
   }
 }
   return (
@@ -80,15 +99,11 @@ function Login() {
   
 
     
-        <Group justify="flex-end" mt="md">
-          <Button type="submit">Submit</Button>
-          {/* <Button
-      variant="gradient"
-      gradient={{ from: 'lime', to: 'red', deg: 90 }}
-    >
-      Submit
-    </Button> */}
-        </Group>
+   <Group justify="center" mt="md">
+  <Button type="submit" variant="gradient" gradient={{ from: 'teal', to: 'red', deg: 105 }} loaderPosition="center" style={{ marginLeft: 'auto', marginRight: 'auto' }} onClick={((values) => handleSubmit(values))}>
+    Submit
+  </Button>
+</Group>
         {/* <p>Don't have an account?</p>
         <NavLink
         href="#required-for-focus"
@@ -100,6 +115,7 @@ function Login() {
           <Link to="/">Sign Up</Link>
         </Text>
       </form>
+      <ToastContainer />
     </Box>
   );
 }

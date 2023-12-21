@@ -1,77 +1,124 @@
-import { TextInput ,PasswordInput,Text,Anchor,Select, Checkbox,NavLink, Button, Group, Box,DateInput } from '@mantine/core';
+import {
+  TextInput,
+  PasswordInput,
+  Text,
+  Anchor,
+  Select,
+  Checkbox,
+  NavLink,
+  Button,
+  Group,
+  Box,
+  DateInput,
+} from "@mantine/core";
 // import { DatePicker } from '@mantine/dates';
-import { useForm } from '@mantine/form';
-import { useDisclosure } from '@mantine/hooks';
-import { useState } from 'react';
-
+import { useForm } from "@mantine/form";
+import { useDisclosure } from "@mantine/hooks";
+import { useEffect, useState } from "react";
+import Axios from "axios";
+import { Link, redirect, useNavigate } from "react-router-dom";
+import "./profile.css";
+import { UseStore } from "../../store";
 function Profile() {
-  const [value,setValue] = useState(null)
-    const [visible, { toggle }] = useDisclosure(false);
   const form = useForm({
-    initialValues: { age: '', number: '', password: '', confirmPassword: '' },
-    validate: {
-      age: (value) => (value.length < 2 ? 'Name must have at least 2 letters' : null),
-      email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email'),
-      password: (value) => (value.length < 6 ? 'Password must have at least 6 characters' : null),
-      confirmPassword: (value, values) =>
-        value !== values.password ? 'Passwords did not match' : null,
-    },
+    initialValues: { age: "", number: "", gender: "" , dob:""},
   });
-
+  const navigate = useNavigate();
+  const {email , setEmail} = UseStore()
+  async function handleSubmit(values) {
+    console.log("data", form.values);
+    const ReqData = form.values;
+    values.preventDefault();
+    try {
+      const { data } = await Axios.put(
+        `http://localhost:5000/api/add/update/profile/${email.email}`,
+        {
+          ReqData,
+        }
+      );
+    } catch (err) {
+      console.log(err);
+    }
+  }
+  useEffect(()=>{
+    if(!email?.email) {
+      navigate('/login')
+    }
+  },[email])
+  function handleLogout() {
+    setEmail({})
+    navigate('/login')
+  }
   return (
-    <Box maw={340} mx="auto">
-      <form onSubmit={form.onSubmit((values) => console.log(values))} className='form'>
-      <Text
-      variant="gradient"
-      gradient={{ from: 'teal', to: 'red', deg: 2 }}
-      sx={{ fontFamily: 'Greycliff CF, sans-serif' }}
-      ta="center"
-      fz="xl"
-      fw={700}
-    >
-      Profile
-    </Text>
-      <TextInput
-          withAsterisk 
+   <>
+   {email?.email ? <Box maw={340} mx="auto">
+      <form onSubmit={(values) => handleSubmit(values)} className="form">
+        <Text
+          variant="gradient"
+          gradient={{ from: "teal", to: "red", deg: 2 }}
+          sx={{ fontFamily: "Greycliff CF, sans-serif" }}
+          ta="center"
+          fz="xl"
+          fw={700}
+        >
+          Profile
+        </Text>
+        <TextInput
+          withAsterisk
           label="Age"
           placeholder="Enter your age"
-          {...form.getInputProps('age')}
+          {...form.getInputProps("age")}
+        />
+        <TextInput
+          withAsterisk
+          label="Date of Birth"
+          placeholder="DD/MM/YYYY"
+          {...form.getInputProps("dob")}
         />
         <Select
-      label="Gender"
-      placeholder="Pick value"
-      data={['Male', 'Female']}
-    />
+          label="Gender"
+          placeholder="Pick value"
+          data={["Male", "Female"]}
+          {...form.getInputProps("gender")}
+        />
         {/* <input type="date" {...form.getInputProps('date')}/> */}
         <TextInput
-          withAsterisk 
+          withAsterisk
           label="Mobile Number"
           placeholder="Enter your number"
-          {...form.getInputProps('number')}
+          {...form.getInputProps("number")}
         />
 
-
-
-<Group justify="center" mt="md">
-  <Button type="submit">Submit</Button>
-  {/* <Button variant="gradient" gradient={{ from: 'teal', to: 'red', deg: 105 }} loaderPosition="center">
-    Submit
-  </Button> */}
-</Group>
-        
-        {/* <NavLink
-        
-        href="#required-for-focus"
-        label="Login"
-        // leftSection={<IconHome2 size="1rem" stroke={1.5} />}
-        
-      /> */}
-      <Text fz="xs">Already have an account?</Text>
-      <Anchor href="https://mantine.dev/" target="_blank">
-      Login
-    </Anchor>
+        <Group justify="center" mt="md">
+          <Button
+            type="submit"
+            variant="gradient"
+            gradient={{ from: "#04421D", to: "#04421D", deg: 105 }}
+            loaderPosition="center"
+            style={{ marginLeft: "auto", marginRight: "auto" }}
+          >
+            Submit
+          </Button>
+        </Group>
       </form>
-    </Box>
+      <Group justify="center" mt="md" className="logout">
+        <h1 style={{fontSize:"20px", color:"White"}}>Welcome, {email?.email}</h1>
+        <Link to="/login">
+          <Button
+            variant="gradient" style={{color:"#04421D"}}
+            gradient={{ from: "white", to: "white", deg: 105 }}
+            loaderPosition="center"
+            className="button"
+            onClick={()=>{handleLogout()}}
+          >
+            Log out
+          </Button>
+        </Link>
+      </Group>
+    </Box> :
+    <></>
+    }
+   </>
   );
 }
 export default Profile;
