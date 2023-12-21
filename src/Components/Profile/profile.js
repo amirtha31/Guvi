@@ -19,6 +19,7 @@ import Axios from "axios";
 import { Link, redirect, useNavigate } from "react-router-dom";
 import "./profile.css";
 import { UseStore } from "../../store";
+import { toast, ToastContainer } from 'react-toastify';
 function Profile() {
   const form = useForm({
     initialValues: { age: "", number: "", gender: "" , dob:""},
@@ -36,6 +37,16 @@ function Profile() {
           ReqData,
         }
       );
+      toast.success("Form submitted successfully !",{
+        position: toast.POSITION.BOTTOM_LEFT,
+    autoClose: 3000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "colored"
+      });
     } catch (err) {
       console.log(err);
     }
@@ -115,6 +126,7 @@ function Profile() {
           </Button>
         </Link>
       </Group>
+      <ToastContainer />
     </Box> :
     <></>
     }
