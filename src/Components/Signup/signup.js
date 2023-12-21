@@ -81,11 +81,7 @@ function Signup() {
         />
         </div>
 
-        {/* <Group justify="center" mt="md">
-          <Button type="submit" variant="gradient" gradient={{ from: 'teal', to: 'red', deg: 105 }} loaderPosition="center" className="button">
-            Submit
-          </Button>
-        </Group> */}
+       
         <Group justify="center" mt="md">
   <Button type="submit" variant="gradient" gradient={{ from: 'teal', to: 'red', deg: 105 }} loaderPosition="center" style={{ marginLeft: 'auto', marginRight: 'auto' }}>
     Submit

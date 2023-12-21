@@ -94,8 +94,7 @@ function Login() {
 
 
       
-   {/* <Button variant="outline" color="red" size="lg" radius="xl">Button</Button> */}
-
+   
   
 
     
@@ -104,12 +103,7 @@ function Login() {
     Submit
   </Button>
 </Group>
-        {/* <p>Don't have an account?</p>
-        <NavLink
-        href="#required-for-focus"
-        label="Sign"
-        // leftSection={<IconHome2 size="1rem" stroke={1.5} />}
-      /> */}
+       
        <Text fz="xs">
           Don't have an account?{' '}
           <Link to="/">Sign Up</Link>

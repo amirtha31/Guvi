@@ -8,7 +8,6 @@ import cors  from "cors";
 const app = express();
 const port = 5000;
 
-// Connect to MongoDB
 mongoose.connect('mongodb+srv://amirtha:amirtha@cluster0.yptchkw.mongodb.net/?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true });
 
 const db = mongoose.connection;
@@ -19,14 +18,14 @@ db.on('error', (error) => {
 
 db.once('open', () => {
     console.log('Database connected successfully');
-    // Start your server or perform other actions after the database connection is established
+   
 });
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended : true}));
 
 app.use('/api/add',UserRouter);
-// app.use('/api/add/profile',ProfileRouter);
+
 
 app.use(bodyParser.json());
 

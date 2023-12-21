@@ -96,9 +96,9 @@ UserRouter.post(
   })
 );
 
-// Update profile details based on the user's email
+
 UserRouter.put(
-  "/update/profile/:email", // Use email as the identifier (adapt as needed)
+  "/update/profile/:email", 
   expressAsyncHandler(async (req, res) => {
     const param_email = req.params.email;
     console.log(param_email);
@@ -117,9 +117,7 @@ UserRouter.put(
         }
       }
 
-      // if (!updatedProfile) {
-      //   return res.status(404).send({ message: 'Profile not found' });
-      // }
+      
 
       res.send(updatedProfile);
     } catch (error) {

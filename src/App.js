@@ -13,7 +13,6 @@ function App() {
     
     <MantineProvider>
         <RoutesComponent />
-        {/* <Profile/> */}
 
       </MantineProvider>
       
